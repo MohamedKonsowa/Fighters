@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Showcase</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    background-color: #333;
+    color: #fff;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+    color: #ffcc00;
+}
+
+.burger {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    display: none;
+    cursor: pointer;
+}
+
+.burger div {
+    width: 25px;
+    height: 3px;
+    background-color: rgb(48, 177, 37);
+    margin: 5px;
+}
+
+@media screen and (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .burger {
+        display: block;
+    }
+}
+
+.product-slider {
+    width: 80%;
+    margin: 20px auto 0; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(70vh - 40px); 
+}
+
+.slider-items {
+    display: flex;
+    position: relative;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+}
+
+.slider-item {
+    flex: 0 0 auto;
+    width: 600px; 
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-right: 20px;
+    scroll-snap-align: start;
+    position: relative;
+}
+
+.slider-item:last-child {
+    margin-right: 0;
+}
+
+.slider-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.slider-item h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.slider-item p {
+    color: #666;
+}
+
+.additional-info {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 400px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    text-align: center;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 400;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.slider-item:hover .additional-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.prev-btn, .next-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #ffcc00;
+    color: #333;
+    border: 2px solid #ffcc00;
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    z-index: 1;
+}
+
+.additional-info:hover {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+}
+
+#search {
+    padding: 10px; 
+    width: 300px; 
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px; 
+    margin: 0 auto;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    background-color: #f5f5f5; 
+    outline: none; 
+    display: block;
+}
+
+#search:focus {
+    border-color: #999; 
+}
+
+#search::placeholder {
+    color: #999; 
+}
+.prev-btn {
+    left: 0;
+}
+
+.next-btn {
+    right: 0;
+}
+
+.footer-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+.social-icons img {
+    width: 30px;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">Logo</div>
+            <div class="burger">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Fighters</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <input type="text" id="search" placeholder="Search Fighters...">
+        <div id="results"></div>
+
+        <div class="product-slider">
+            <ul class="slider-items">
+                <li class="slider-item">
+                    <img id="productImage" src="" alt="Product Image">
+                    <h3 id="productName">Product Name</h3>
+                    <p id="productDescription">Product Description</p>
+                    <div class="additional-info">
+                    <p id="productPrice">Product Price</p>
+
+                    </div>
+                </li>
+            </ul>
+            <button class="prev-btn">&#10094;</button>
+            <button class="next-btn">&#10095;</button>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-links">
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/profile.php?id=100004230305550&mibextid=ZbWKwL"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/2048px-2021_Facebook_icon.svg.png" alt="Facebook"></a>
+            <a href="https://www.linkedin.com/in/mohamed-konsowa-0a6862219/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png" alt="LinektIn"></a>
+        </div>
+        <div class="copylight">
+            &copy; 2024 Mohamed Konsowa. All Rights Reserved.
+        </div>
+    </footer>
+    <script>
+           const products = [
+    { 
+        name: 'Sukhoi Su-57', 
+        description: 'The Sukhoi Su-57 is a twin-engine stealth multirole fighter aircraft developed by Sukhoi. It is the product of the PAK FA programme, which was initiated in 1999 as a more modern and affordable alternative to the MFI. Sukhoi\'s internal designation for the aircraft is T-50.', 
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Sukhoi_Design_Bureau%2C_054%2C_Sukhoi_Su-57_%2849581303977%29.jpg/800px-Sukhoi_Design_Bureau%2C_054%2C_Sukhoi_Su-57_%2849581303977%29.jpg',
+        price:'$40-45 million'
+    },
+    { 
+        name: 'Mikoyan MiG-35', 
+        description: 'The Mikoyan MiG-35 is a Russian multirole fighter that is designed by Mikoyan, a division of the United Aircraft Corporation. Marketed as a 4++ generation jet fighter, it is a further development of the MiG-29M/M2 and MiG-29K/KUB fighters.', 
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/MiG-35D_%283861086285%29.jpg/640px-MiG-35D_%283861086285%29.jpg',
+        price:'$30 million'
+    },
+    { 
+        name: 'Dassault Rafale', 
+        description: 'The Dassault Rafale is a French twin-engine, canard delta wing, multirole fighter aircraft designed and built by Dassault Aviation. Equipped with a wide range of weapons, the Rafale is intended to perform air supremacy, interdiction, aerial reconnaissance, ground support, in-depth strike, anti-ship strike, and nuclear deterrence missions.', 
+        imageUrl: 'https://images.wsj.net/im-778564?width=1280&size=1',
+        price:'$115 million'
+    },
+    { 
+        name: 'Eurofighter Typhoon', 
+        description: 'The Eurofighter Typhoon is a twin-engine, canard–delta wing, multirole fighter. The Typhoon was designed originally as an air superiority fighter and is manufactured by a consortium of Airbus, BAE Systems, and Leonardo that conducts the majority of the project through a joint holding company, Eurofighter Jagdflugzeug GmbH.', 
+        imageUrl: 'https://www.airforce-technology.com/wp-content/uploads/sites/6/2023/11/shutterstock_2160630507.jpg',
+        price:'$124 million'       
+    },
+    { 
+        name: 'Lockheed Martin F-35 Lightning II', 
+        description: 'The Lockheed Martin F-35 Lightning II is an American family of single-seat, single-engine, all-weather stealth multirole combat aircraft that is intended to perform both air superiority and strike missions. It is also able to provide electronic warfare and intelligence, surveillance, and reconnaissance capabilities.', 
+        imageUrl: 'https://media.defense.gov/2021/Sep/24/2002860968/1200/1200/0/210919-F-AF248-9084.JPG',
+        price:'$109 million'
+    }
+];
+
+        // Function to display search results
+        function displayResults(results) {
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = ''; // Clear previous results
+
+            // Display results in the results container
+            results.forEach(product => {
+                const productElement = document.createElement('div');
+                productElement.classList.add('product');
+                productElement.innerHTML = `<h3>${product.name}</h3><p>${product.description}</p>`;
+                resultsContainer.appendChild(productElement);
+            });
+        }
+
+        // Function to handle search
+document.getElementById('search').addEventListener('input', (e) => {
+    const query = e.target.value.trim().toLowerCase();
+    
+    if (query === '') {
+        clearResults(); // Function to clear the results
+    } else {
+        const results = products.filter(product => product.name.toLowerCase().includes(query));
+        displayResults(results);
+    }
+});
+
+// Function to clear the results
+function clearResults() {
+    const resultsContainer = document.getElementById('results');
+    resultsContainer.innerHTML = ''; // Clear previous results
+}
+
+        let currentIndex = 0;
+        const productImage = document.getElementById('productImage');
+        const productName = document.getElementById('productName');
+        const productDescription = document.getElementById('productDescription');
+        const productPrice = document.getElementById('productPrice');
+
+        // Function to display the current product
+        function displayProduct() {
+            const currentProduct = products[currentIndex];
+            productImage.src = currentProduct.imageUrl;
+            productName.textContent = currentProduct.name;
+            productDescription.textContent = currentProduct.description;
+            productPrice.textContent = currentProduct.price
+        }
+
+        // Display the initial product
+        displayProduct();
+
+        // Button event listeners to navigate through products
+        document.querySelector('.prev-btn').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + products.length) % products.length;
+            displayProduct();
+        });
+
+        document.querySelector('.next-btn').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % products.length;
+            displayProduct();
+        });
+    </script>
+</body>
+</html>
